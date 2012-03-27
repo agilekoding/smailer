@@ -17,8 +17,15 @@ module Smailer
           ActionMailer::Base.delivery_method
         end
 
+        rails_action_mailer_settings = unless Compatibility.rails_3?
+          ActionMailer::Base.smtp_settings 
+ 			  else
+					{}
+        end                         
+
+				
         Mail.defaults do
-          delivery_method rails_delivery_method
+          delivery_method rails_delivery_method, rails_action_mailer_settings
         end
 
         batch_size   = (Smailer::Models::Property.get('queue.batch_size') || 100).to_i

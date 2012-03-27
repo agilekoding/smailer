@@ -13,9 +13,17 @@ module Smailer
       validates_length_of :from, :to, :subject, :last_error, :maximum => 255, :allow_nil => true
       validates_uniqueness_of :key, :allow_nil => true
 
-      delegate :mailing_list, :to => :mail_campaign, :allow_nil => true
+      #delegate :mailing_list, :to => :mail_campaign, :allow_nil => true
 
       before_save :update_mail_campaign_counts
+
+			def mail_campaign           
+				MailCampaign.find(self.mail_campaign_id)
+			end
+
+			def mailing_list
+				mail_campaign.mailing_list       
+			end                     
 
       def status_text
         Statuses.constants.each do |constant_name|

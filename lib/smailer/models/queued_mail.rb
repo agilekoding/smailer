@@ -13,10 +13,26 @@ module Smailer
 
       attr_accessible :mail_campaign_id, :to
 
-      delegate :from, :subject, :mailing_list, :to => :mail_campaign, :allow_nil => true
+      #delegate :from, :subject, :mailing_list, :to => :mail_campaign, :allow_nil => true
 
       before_validation :initialize_message_key
       before_save :initialize_message_key
+
+      def mail_campaign           
+				MailCampaign.find(self.mail_campaign_id)
+			end
+			def from 
+				mail_campaign.from          
+			end
+
+			def subject 
+				mail_campaign.subject          
+			end
+
+			def mailing_list
+				mail_campaign.mailing_list       
+			end                                  
+
 
       def body_html
         interpolate mail_campaign.body_html
